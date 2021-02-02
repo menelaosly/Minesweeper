@@ -156,10 +156,10 @@ const onCellClick = (ev) => {
         return;
     } else {
         table_cell.open = true;
+        table_cell.el.classList.add("open");
     }
 
     findIfWon();
-    draw();
 };
 
 const findIfWon = () => {
@@ -181,6 +181,7 @@ const recursiveOpenEmpty = (x,y) => {
     if (y < 0 || y >= BOARD_DIM) return;
     const wasCellOpen = table[x][y].open;
     table[x][y].open = true;
+    table[x][y].el.classList.add("open");
 
     if (table[x][y].val || wasCellOpen) return;
 
