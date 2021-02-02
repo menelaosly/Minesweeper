@@ -92,6 +92,15 @@
         object-fit: contain;
     }
 
+    .cell.flagged::before {
+        content: "🚩";
+        position: absolute;
+        z-index: 5;
+        top: 0;
+        left: 3px;
+        font-size: 15px;
+    }
+
     .overlay {
         position: absolute;
         width: 100%;

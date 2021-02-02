@@ -51,6 +51,7 @@ const init = () => {
                     val: 0,
                     open: false,
                     mine: false,
+                    flag: false,
                     el: null
                 })
             ));
@@ -130,6 +131,7 @@ const draw = (first) => {
 
                 table_cell.el = cell;
                 cell.addEventListener("click",onCellClick);
+                cell.addEventListener('contextmenu', flagCell, false);
                 board.appendChild(cell);
             }
 
@@ -141,13 +143,24 @@ const draw = (first) => {
     }
 };
 
+const flagCell = (ev) => {
+        ev.preventDefault && ev.preventDefault();
+        const x = ev.target.getAttribute("x");
+        const y = ev.target.getAttribute("y");
+        let table_cell = table[x][y];
+        if(table_cell.open) return;
+        table_cell.flag = !table_cell.flag;
+        table_cell.el.classList.toggle("flagged");
+        return false;
+};
+
 const onCellClick = (ev) => {
     const cell = ev.target;
     const x = Number(cell.getAttribute("x"));
     const y = Number(cell.getAttribute("y"));
     const table_cell = table[x][y];
 
-    if (table_cell.open) return;
+    if (table_cell.open || table_cell.flag) return;
     else if (table_cell.val === 0) {
         recursiveOpenEmpty(x,y);
     }
@@ -179,8 +192,10 @@ const findIfWon = () => {
 const recursiveOpenEmpty = (x,y) => {
     if (x < 0 || x >= BOARD_DIM) return;
     if (y < 0 || y >= BOARD_DIM) return;
-    const wasCellOpen = table[x][y].open;
-    table[x][y].open = true;
+    const table_cell = table[x][y];
+    if(table_cell.flag) return;
+    const wasCellOpen = table_cell.open;
+    table_cell.open = true;
     table[x][y].el.classList.add("open");
 
     if (table[x][y].val || wasCellOpen) return;
