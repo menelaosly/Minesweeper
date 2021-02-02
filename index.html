@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron&display=swap');
+
+    :root {
+        --dim: 10;
+    }
+
+    html {
+        background: rgb(205, 223, 194);
+    }
+
+    body {
+        width: 100vw;
+        height: 100vh;
+        margin: 0;
+    }
+
+    .grid {
+        max-width: max-content;
+        max-height: max-content;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .board {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        min-width: max-content;
+        min-height: max-content;
+        display: grid;
+        grid-template-columns: repeat(var(--dim), 1fr);
+        grid-template-rows: repeat(var(--dim), 1fr);
+        background: gray;
+    }
+
+    .cell {
+        width: 25px;
+        height: 25px;
+        font-size: 20px;
+        font-weight: bold;
+        text-align: center;
+        border: 1px solid rgba(62, 62, 62, 0.422);
+        position: relative;
+        transition: all .4s ease-in-out;
+    }
+
+    .cell::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        background: grey;
+        transition: all .4s ease-in-out;
+        transform-origin: 50% 50%;
+    }
+
+    .cell.open::after {
+        transform: scale(0);
+    }
+
+    .cell:not(.open)::after:hover {
+        background: rgb(62, 62, 62);
+        cursor: pointer;
+    }
+
+    .cell.open {
+        background: rgb(184, 184, 184);
+        color: rgb(123, 115, 115);
+        box-shadow: inset 2px 2px 4px rgba(62, 62, 62, 0.422);
+    }
+
+    .cell img {
+        display: none;
+    }
+
+    .cell.open img {
+        display: block;
+        width: 25px;
+        object-fit: contain;
+    }
+
+    .overlay {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        min-width: 270px;
+        min-height: 270px;
+        top: 0;
+        left: 0;
+        background: rgba(0, 0, 0, 0.7);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .overlay-msg {
+        font-size: 30px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        padding: 10px 50px;
+        background: rgba(255, 255, 255, 0.843);
+        border-radius: 20px;
+    }
+
+    .overlay b {
+        color: white;
+    }
+
+    .overlay span {
+        font-weight: bold;
+        color: rgb(186, 18, 18);
+    }
+
+    button {
+        min-width: 30%;
+        font-size: 16px;
+        outline: 0;
+        background: transparent;
+        border: 2px solid white;
+        color: white;
+        border-radius: 20px;
+        margin: 10px 0;
+        padding: 10px;
+        text-transform: uppercase;
+    }
+
+    .timer {
+        background: black;
+        border: 2px solid grey;
+        padding: 5px;
+        position: absolute;
+        top: -46px;
+        font-size: 25px;
+        font-weight: bold;
+        color: rgb(186, 18, 18);
+        width: 102px;
+        height: 46px;
+        box-sizing: border-box;
+        text-align: end;
+    }
+
+    .time {
+        font-family: 'Orbitron', sans-serif;
+        font-weight: bold;
+    }
+
+    /* .timer::before {
+        content: "00:00";
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        color: rgb(61, 61, 61);
+        z-index: 1;
+    } */
+
+    .timer #time {
+        z-index: 4;
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        max-width: max-content;
+    }
+</style>
+
+<body>
+    <div class="grid">
+        <div id="board" class="board">
+            <div class="timer time">
+                <div id="time"></div>
+            </div>
+        </div>
+
+        <div id="overlay" class="overlay">
+            <div id="overlay-msg" class="overlay-msg"></div>
+            <button onclick="init();">Play again</button>
+            <button onclick="openDifOverlay();">SET DIFFICULTY</button>
+        </div>
+
+        <div id="start" class="overlay">
+            <button onclick="setDifficultyAndStart('easy');">Easy</button>
+            <button onclick="setDifficultyAndStart('medium');">Medium</button>
+            <button onclick="setDifficultyAndStart('hard');">Hard</button>
+        </div>
+    </div>
+
+    <script src="./index.js"></script>
+</body>
+
+</html>
